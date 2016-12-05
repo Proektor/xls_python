@@ -42,6 +42,8 @@ with open('../src/catalog.csv') as src_cat:             # открываем и�
     # сохраняем шаблон
     emptyBook.save('../out/template_catalog.xls')
 
+    postName = []
+
     # обрабатываем исходный каталог построчно
     # for row in rdr:
     srcRow = next(rdr)
@@ -52,8 +54,20 @@ with open('../src/catalog.csv') as src_cat:             # открываем и�
     else:
         namePost = data[-1]
 
-    workB = xlrd.open_workbook('../out/template_catalog.xls', on_demand = True, formatting_info = True)
-    workSh = workB.sheet_by_index(0)
+    if postName.__contains__(namePost):
+        workB = xlwt.Workbook('../out/catalog_'+namePost)
+    else:
+        emptyBook.save('../out/catalog_'+namePost+'.xls')
+        postName.append(namePost)
+
+    workB = xlwt.Workbook('../out/catalog_'+namePost+'.xls')
+    workSh = workB.set_active_sheet(0)
+
+    # emptyRow
+    # i = 0
+    # for fieldData in data:
+    #     workSh.put_cell(emptyRow,i,0,fieldData)
+    #     i += 1
 
 
 
